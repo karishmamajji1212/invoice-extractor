@@ -8,6 +8,8 @@ import {
 } from "lucide-react";
 import { Dropzone, ResultsPanel } from "@/components/Dropzone";
 import { streamExtraction } from "@/sseClient";
+import { getApiEndpoint } from "@/config";
+import { BaseUrlProvider, useBaseUrl } from "@/context/ApiContext";
 import type {
   FileResult,
   HealthResponse,
@@ -15,7 +17,7 @@ import type {
   SSETokenEvent,
 } from "@/types";
 
-function App() {
+function MainApp() {
   const [files, setFiles] = useState<File[]>([]);
   const [results, setResults] = useState<FileResult[]>([]);
   const [processing, setProcessing] = useState(false);
@@ -27,12 +29,15 @@ function App() {
 
   const abortRef = useRef<AbortController | null>(null);
 
+  // Consume BASE_URL from Context
+  const baseUrl = useBaseUrl();
+
   useEffect(() => {
-    fetch("/api/health")
+    fetch(getApiEndpoint("/health"))
       .then((r) => (r.ok ? r.json() : null))
       .then((d: HealthResponse | null) => setHealth(d))
       .catch(() => setHealth(null));
-  }, []);
+  }, [baseUrl]);
 
   const addFiles = useCallback((incoming: File[]) => {
     setFiles((prev) => {
@@ -160,7 +165,7 @@ function App() {
   }, []);
 
   const handleDownload = useCallback(() => {
-    window.location.href = "/api/download";
+    window.location.href = getApiEndpoint("/download");
   }, []);
 
   return (
@@ -177,16 +182,16 @@ function App() {
                 Utility Invoice Extractor
               </h1>
               <p className="text-xs text-slate-500">
-                Multilingual Invoice Extraction
+                Multilingual Batch Invoice Extraction & Streaming
               </p>
             </div>
           </div>
-          {health && (
-            <div className="hidden items-center gap-2 text-xs text-slate-500 sm:flex">
-              <span className="flex h-2 w-2 rounded-full bg-emerald-500" />
-              {health.model ? "Connected" : "Disconnected"}
-            </div>
-          )}
+          <div className="hidden items-center gap-2 text-xs text-slate-500 sm:flex">
+            <span
+              className={`flex h-4 w-4 rounded-full ${health ? "bg-green-500" : "bg-rose-500"} bg-emerald-500`}
+            />
+            {health ? "Connected" : "Not Connected"}
+          </div>
         </div>
       </header>
 
@@ -256,4 +261,10 @@ function App() {
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <BaseUrlProvider>
+      <MainApp />
+    </BaseUrlProvider>
+  );
+}

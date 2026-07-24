@@ -2,6 +2,8 @@
 
 A modern, high-performance web application for **multilingual utility invoice data extraction** powered by Large Language Models (LLMs). Upload electricity, gas, or water invoices in PDF or TXT format and watch structured data stream in real-time.
 
+## Live Link: [AI-Powered Multilingual Utility Invoice Extractor](https://invoice-extractor-upaa.vercel.app)
+
 ---
 
 ## 🌟 Key Features
