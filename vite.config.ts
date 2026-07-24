@@ -4,13 +4,9 @@ import { fileURLToPath, URL } from "node:url";
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), "");
-
   // Target http://localhost:8000 when local, and production backend URL when in production
-  console.log(mode);
-  console.log(env);
   const targetUrl =
-    env.VITE_API_BASE_URL ||
+    import.meta.env.VITE_API_BASE_URL ||
     (mode === "production"
       ? "https://invoice-extractor-g0g6.onrender.com"
       : "http://localhost:8000");
