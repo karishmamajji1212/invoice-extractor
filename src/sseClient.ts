@@ -6,6 +6,7 @@ import type {
   SSESuccessEvent,
   SSETokenEvent,
 } from "@/types";
+import { getApiEndpoint } from "./config";
 
 interface SSEHandlers {
   onQueue: (e: SSEQueueEvent) => void;
@@ -29,7 +30,7 @@ export function streamExtraction(
   const formData = new FormData();
   for (const f of files) formData.append("files", f);
 
-  fetch("/api/extract", {
+  fetch(getApiEndpoint("api/extract"), {
     method: "POST",
     body: formData,
     signal: controller.signal,
@@ -40,7 +41,10 @@ export function streamExtraction(
         try {
           const json = await resp.json();
           if (json.detail) {
-            errorMsg = typeof json.detail === "string" ? json.detail : JSON.stringify(json.detail);
+            errorMsg =
+              typeof json.detail === "string"
+                ? json.detail
+                : JSON.stringify(json.detail);
           }
         } catch {
           const text = await resp.text().catch(() => "");
@@ -69,7 +73,8 @@ export function streamExtraction(
           const dataLines: string[] = [];
           for (const line of lines) {
             if (line.startsWith("event:")) event = line.slice(6).trim();
-            else if (line.startsWith("data:")) dataLines.push(line.slice(5).trim());
+            else if (line.startsWith("data:"))
+              dataLines.push(line.slice(5).trim());
             // heartbeat comment lines (": heartbeat") are ignored
           }
           if (event === "heartbeat" || event === "message") continue;

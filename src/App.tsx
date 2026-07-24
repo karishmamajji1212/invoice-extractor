@@ -33,7 +33,7 @@ function MainApp() {
   const baseUrl = useBaseUrl();
 
   useEffect(() => {
-    fetch(getApiEndpoint("/api/health"))
+    fetch(getApiEndpoint("api/health"))
       .then((r) => (r.ok ? r.json() : null))
       .then((d: HealthResponse | null) => setHealth(d))
       .catch(() => setHealth(null));
@@ -165,7 +165,7 @@ function MainApp() {
   }, []);
 
   const handleDownload = useCallback(() => {
-    window.location.href = getApiEndpoint("/api/download");
+    window.location.href = getApiEndpoint("api/download");
   }, []);
 
   return (
