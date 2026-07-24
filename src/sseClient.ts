@@ -30,7 +30,7 @@ export function streamExtraction(
   const formData = new FormData();
   for (const f of files) formData.append("files", f);
 
-  fetch(getApiEndpoint("api/extract"), {
+  fetch(getApiEndpoint("extract"), {
     method: "POST",
     body: formData,
     signal: controller.signal,
