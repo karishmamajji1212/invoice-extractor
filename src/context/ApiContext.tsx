@@ -2,8 +2,8 @@ import React, { createContext, useContext } from "react";
 
 // Determine BASE_URL dynamically: use VITE_API_BASE_URL if set, else dev proxy / local / render fallback
 export const BASE_URL =
-  import.meta.env.VITE_API_BASE_URL?.trim() ||
-  (import.meta.env.DEV
+  import.meta.env.VITE_API_BASE_URL ||
+  (process.env.NODE_ENV === "development"
     ? "http://localhost:8000"
     : "https://invoice-extractor-g0g6.onrender.com");
 
@@ -13,7 +13,9 @@ const BaseUrlContext = createContext<string>(BASE_URL);
 /**
  * Provider component that wraps the app and makes BASE_URL available to all child components.
  */
-export const BaseUrlProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const BaseUrlProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   return (
     <BaseUrlContext.Provider value={BASE_URL}>
       {children}

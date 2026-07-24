@@ -33,7 +33,7 @@ function MainApp() {
   const baseUrl = useBaseUrl();
 
   useEffect(() => {
-    fetch(getApiEndpoint("/health"))
+    fetch(getApiEndpoint("/api/health"))
       .then((r) => (r.ok ? r.json() : null))
       .then((d: HealthResponse | null) => setHealth(d))
       .catch(() => setHealth(null));
@@ -165,7 +165,7 @@ function MainApp() {
   }, []);
 
   const handleDownload = useCallback(() => {
-    window.location.href = getApiEndpoint("/download");
+    window.location.href = getApiEndpoint("/api/download");
   }, []);
 
   return (
@@ -188,7 +188,7 @@ function MainApp() {
           </div>
           <div className="hidden items-center gap-2 text-xs text-slate-500 sm:flex">
             <span
-              className={`flex h-4 w-4 rounded-full ${health ? "bg-green-500" : "bg-rose-500"} bg-emerald-500`}
+              className={`flex h-3 w-3 rounded-full ${health ? "bg-green-500" : "bg-rose-500"} bg-emerald-500`}
             />
             {health ? "Connected" : "Not Connected"}
           </div>
