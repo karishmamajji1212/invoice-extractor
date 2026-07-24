@@ -35,7 +35,7 @@ function MainApp() {
 
   useEffect(() => {
     setHealthLoading(true);
-    fetch(getApiEndpoint("/health"))
+    fetch(getApiEndpoint("health"))
       .then((r) => (r.ok ? r.json() : null))
       .then((d: HealthResponse | null) => setHealth(d))
       .catch(() => setHealth(null))
