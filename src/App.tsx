@@ -64,13 +64,16 @@ function App() {
     setErrorCount(0);
     // Pre-populate results as "queued"
     setResults(
-      files.map((f) => ({ filename: f.name, status: "queued" as const }))
+      files.map((f) => ({ filename: f.name, status: "queued" as const })),
     );
 
     abortRef.current = streamExtraction(files, {
       onQueue: (e: SSEQueueEvent) => {
         setResults(
-          e.filenames.map((fn) => ({ filename: fn, status: "queued" as const }))
+          e.filenames.map((fn) => ({
+            filename: fn,
+            status: "queued" as const,
+          })),
         );
       },
       onStart: (e) => {
@@ -78,8 +81,8 @@ function App() {
           prev.map((r) =>
             r.filename === e.filename
               ? { ...r, status: "processing", streamingText: "" }
-              : r
-          )
+              : r,
+          ),
         );
       },
       onToken: (e: SSETokenEvent) => {
@@ -87,8 +90,8 @@ function App() {
           prev.map((r) =>
             r.filename === e.filename
               ? { ...r, streamingText: (r.streamingText ?? "") + e.token }
-              : r
-          )
+              : r,
+          ),
         );
       },
       onSuccess: (e) => {
@@ -102,8 +105,8 @@ function App() {
                   extra_fields: e.extra_fields,
                   streamingText: undefined,
                 }
-              : r
-          )
+              : r,
+          ),
         );
         setSuccessCount((c) => c + 1);
       },
@@ -120,8 +123,8 @@ function App() {
                     error: e.error,
                     streamingText: undefined,
                   }
-                : r
-            )
+                : r,
+            ),
           );
           setErrorCount((c) => (c === 0 ? files.length : c));
           return;
@@ -135,8 +138,8 @@ function App() {
                   error: e.error,
                   streamingText: undefined,
                 }
-              : r
-          )
+              : r,
+          ),
         );
         setErrorCount((c) => c + 1);
       },
