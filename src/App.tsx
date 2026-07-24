@@ -25,16 +25,22 @@ function MainApp() {
   const [successCount, setSuccessCount] = useState(0);
   const [errorCount, setErrorCount] = useState(0);
   const [error, setError] = useState<string | null>(null);
+  const [healthLoading, setHealthLoading] = useState(true);
   const [health, setHealth] = useState<HealthResponse | null>(null);
 
   const abortRef = useRef<AbortController | null>(null);
 
+  // Consume BASE_URL from Context
+  const baseUrl = useBaseUrl();
+
   useEffect(() => {
-    fetch(getApiEndpoint("health"))
+    setHealthLoading(true);
+    fetch(getApiEndpoint("/health"))
       .then((r) => (r.ok ? r.json() : null))
       .then((d: HealthResponse | null) => setHealth(d))
-      .catch(() => setHealth(null));
-  }, []);
+      .catch(() => setHealth(null))
+      .finally(() => setHealthLoading(false));
+  }, [baseUrl]);
 
   const addFiles = useCallback((incoming: File[]) => {
     setFiles((prev) => {
@@ -183,12 +189,28 @@ function MainApp() {
               </p>
             </div>
           </div>
-          <div className="hidden items-center gap-2 text-xs text-slate-500 sm:flex">
-            <span
-              className={`flex h-3 w-3 rounded-full ${health ? "bg-green-500" : "bg-rose-500"} bg-emerald-500`}
-            />
-            {health ? "Connected" : "Not Connected"}
-          </div>
+          {healthLoading ? (
+            <div className="flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-medium text-amber-700 shadow-2xs">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-amber-500" />
+              </span>
+              <span>Establishing Connection</span>
+              <span className="inline-flex w-4 overflow-hidden font-mono font-bold animate-pulse">
+                ...
+              </span>
+            </div>
+          ) : health ? (
+            <div className="hidden items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700 sm:flex shadow-2xs">
+              <span className="flex h-2 w-2 rounded-full bg-emerald-500" />
+              <span>Connected</span>
+            </div>
+          ) : (
+            <div className="hidden items-center gap-2 rounded-full border border-rose-200 bg-rose-50 px-3 py-1 text-xs font-medium text-rose-700 sm:flex shadow-2xs">
+              <span className="flex h-2 w-2 rounded-full bg-rose-500" />
+              <span>Not Connected</span>
+            </div>
+          )}
         </div>
       </header>
 

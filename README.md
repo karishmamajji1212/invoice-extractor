@@ -4,6 +4,8 @@ A modern, high-performance web application for **multilingual utility invoice da
 
 ## Live Link: [AI-Powered Multilingual Utility Invoice Extractor](https://invoice-extractor-upaa.vercel.app)
 
+#### Example input files are in `samples` directory. These are invoices with variation in: Format/layout and the Language (English, Spanish, French, etc.)
+
 ### Frontend deployed on Vercel
 
 ### Backend deployed on Render - as Vercel doesn't support long-lived SSE and often times out.
@@ -16,6 +18,7 @@ A modern, high-performance web application for **multilingual utility invoice da
 - **⚡ Real-Time SSE Token Streaming**: Watch the LLM generate structured JSON live in a terminal-style preview window as tokens arrive.
 - **📊 Dynamic Field Detection**: Automatically extracts standard utility fields while preserving non-standard extra fields returned by the model.
 - **📦 Batch Management & CSV Export**: Processes multiple invoices sequentially, displays progress, and exports batch results to CSV with a single click.
+  `
 
 ### Technology stacks
 
