@@ -29,15 +29,12 @@ function MainApp() {
 
   const abortRef = useRef<AbortController | null>(null);
 
-  // Consume BASE_URL from Context
-  const baseUrl = useBaseUrl();
-
   useEffect(() => {
     fetch(getApiEndpoint("health"))
       .then((r) => (r.ok ? r.json() : null))
       .then((d: HealthResponse | null) => setHealth(d))
       .catch(() => setHealth(null));
-  }, [baseUrl]);
+  }, []);
 
   const addFiles = useCallback((incoming: File[]) => {
     setFiles((prev) => {
