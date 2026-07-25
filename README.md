@@ -206,6 +206,13 @@ The application was validated using a multi-tiered testing strategy combining ma
 2. **Non-Blocking Queue Worker Thread**: LLM streaming calls run inside a background daemon thread that feeds chunks into a thread-safe `queue.Queue`.
 3. **Heartbeat Interleaving**: The async generator polls the queue with a 3-second timeout (`HEARTBEAT_INTERVAL`). If no token arrives within 3 seconds, a heartbeat comment frame (`: heartbeat\n\n`) is yielded, keeping the HTTP socket open.
 
+## 💡 Assumptions & Future Roadmap
+
+- **Supported Formats**: Assumes input documents are text-selectable PDFs or text files.
+- **Model Choice Rationale**: Chosen for its open Apache license and 900B+ parameter architecture for high accuracy.
+- **Multimodal Capabilities**: Supports native image-text multimodal extraction for future visual invoice processing.
+- **Future OCR & Robustness**: Given more time, full OCR integration and broader image/file handling would be implemented for enhanced robustness.
+
 ---
 
 ## 🛠️ Project Structure
