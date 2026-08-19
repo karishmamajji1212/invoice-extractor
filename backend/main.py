@@ -163,7 +163,6 @@ async def extract(files: list[UploadFile] = File(...)):
                         break  # stream finished
                     
                     if item["type"] == "token":
-                        await asyncio.sleep(1.5)  # 1.5s delay for smooth, intuitive UI streaming preview
                         yield sse("token", {
                             "filename": filename, "index": idx, "total": total,
                             "token": item["token"]

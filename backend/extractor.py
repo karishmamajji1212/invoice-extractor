@@ -211,7 +211,7 @@ def extract_invoice_fields_streaming(
     try:
         data = parse_json(raw_content)
     except Exception as exc:
-        yield {"type": "error", "error": str(exc)}
+        yield {"type": "error", "error": str(exc)}.
         return
 
     # Detect the "not an invoice / all missing" sentinel.
